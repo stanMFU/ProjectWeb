@@ -1,0 +1,22 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon app",
+    "server": "nade app"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bootstrap": "^5.3.3",
+    "express": "^4.19.2",
+    "mysql2": "^3.9.3",
+    "node": "^18.20.0",
+    "nodemon": "^3.1.0",
+    "package": "^1.0.1",
+    "sweetalert2": "^11.10.7"
+  }
+}
