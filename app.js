@@ -1,12 +1,39 @@
-const express = require("express");
-const con = require("./config/db");
-const app = express();
-const path = require("path");
-const bcrypt = require('bcrypt');
+const express = require('express');
+const path = require('path');
+const bcrypt = require("bcrypt");
+const session = require('express-session');
+const MemoryStore = require('memorystore')(session);
+const con = require('./config/db');
 
+const app = express();
+
+// set the public folder
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// for session
+app.use(session({
+    cookie: { maxAge: 24 * 60 * 60 * 1000 }, //1 day in millisec
+    secret: 'mysecretcode',
+    resave: false,
+    saveUninitialized: true,
+    // config MemoryStore here
+    store: new MemoryStore({
+        checkPeriod: 24 * 60 * 60 * 1000 // prune expired entries every 24h
+    })
+}));
+
+// // ------------- Create hashed password --------------
+// app.get("/password/:pass", function (req, res) {
+//     const password = req.params.pass;
+//     const saltRounds = 10;    //the cost of encrypting see https://github.com/kelektiv/node.bcrypt.js#a-note-on-rounds
+//     bcrypt.hash(password, saltRounds, function (err, hash) {
+//         if (err) {
+//             return res.status(500).send("Hashing error");
+//         }
+//         res.send(hash);
+//     });
+// });
 
 app.get("/homeuser", function (req, res) {
     res.sendFile(path.join(__dirname, "HomepageUser.html"));
@@ -21,6 +48,7 @@ app.get("/homestaff", function (req, res) {
     res.sendFile(path.join(__dirname, "HomepageStaff.html"));
 });
 
+//root sever
 app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "login.html"));
 });
@@ -33,11 +61,23 @@ app.post("/Register1", async function (req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
-    // เข้ารหัสรหัสผ่านก่อนบันทึกลงฐานข้อมูล
+    // -------GenerateID--------
+    function generateID() {
+        let id = "";
+        const digits = "0123456789";
+        for (let i = 0; i < 11; i++) {
+            id += digits[Math.floor(Math.random() * 9)];
+        }
+        return id;
+    }
+    
+
+    // ------------- Create hashed password --------------
     try {
-        const hashedPassword = await bcrypt.hash(password, 10); // 10 คือค่าความปลอดภัยของการเข้ารหัส
+        const hashedPassword = await bcrypt.hash(password, 10); // 10 คือค่าความปลอดภัยของการเข้ารหัส : 10 salt
 
         // ตรวจสอบว่า username มีอยู่ในฐานข้อมูลแล้วหรือไม่
+        // check username in database
         const checkUsernameQuery = "SELECT * FROM users WHERE Username = ?";
         con.query(checkUsernameQuery, [username], async function (err, result) {
             if (err) {
@@ -51,6 +91,7 @@ app.post("/Register1", async function (req, res) {
             }
 
             // ถ้า username ยังไม่มีในฐานข้อมูล ก็ทำการลงทะเบียน
+            // if username did not have in database --> jump to register
             const sql = "INSERT INTO users (ID, Firstname, Lastname, Username, Password, Role) VALUES (?, ?, ?, ?, ?, ?)";
             const id = generateID();
             const firstname = req.body.firstname;
@@ -71,16 +112,6 @@ app.post("/Register1", async function (req, res) {
         res.status(500).send("Error hashing password");
     }
 });
-
-
-function generateID() {
-    let id = "";
-    const digits = "0123456789";
-    for (let i = 0; i < 11; i++) {
-        id += digits[Math.floor(Math.random() * 9)];
-    }
-    return id;
-}
 
 app.post('/login', function(req, res) {
     const username = req.body.username;
@@ -113,7 +144,23 @@ app.post('/login', function(req, res) {
     });
 });
 
-const port = 3000;
-app.listen(port, function () {
-    console.log("Server is ready at " + port);
+// ------------- Logout --------------
+app.get("/logout", function (req, res) {
+    //clear session variable
+    req.session.destroy(function (err) {
+        if (err) {
+            console.error(err);
+            res.status(500).send("Cannot clear session");
+        }
+        else {
+            res.redirect("/");
+        }
+    });
+});
+
+// **config
+// start sever
+const PORT = 3000;
+app.listen(PORT, function(){
+    console.log('Sever is runnig at port ' + PORT)
 });
