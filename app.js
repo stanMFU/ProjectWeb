@@ -40,6 +40,18 @@ app.get("/homestaff", function (req, res) {
     res.sendFile(path.join(__dirname, "HomepageStaff.html"));
 });
 
+// ============ User routes ==============
+// Endpoint to fetch room details based on ordering_id
+app.get("/room/:orderingID", function (req, res) {
+    const sql = "SELECT room.room_id, room.room_name, room.status FROM room INNER JOIN booking ON room.room_id = booking.room_id WHERE booking.ordering_id = ?";
+    con.query(sql, [req.params.orderingID], function (err, results) {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("Database server error");
+        }
+        res.json(results);
+    });
+});
 
 
 app.get("/Register", function (req, res) {
