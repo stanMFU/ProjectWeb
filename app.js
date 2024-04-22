@@ -22,18 +22,10 @@ app.use(session({
         checkPeriod: 24 * 60 * 60 * 1000 // prune expired entries every 24h
     })
 }));
-
-// // ------------- Create hashed password --------------
-// app.get("/password/:pass", function (req, res) {
-//     const password = req.params.pass;
-//     const saltRounds = 10;    //the cost of encrypting see https://github.com/kelektiv/node.bcrypt.js#a-note-on-rounds
-//     bcrypt.hash(password, saltRounds, function (err, hash) {
-//         if (err) {
-//             return res.status(500).send("Hashing error");
-//         }
-//         res.send(hash);
-//     });
-// });
+// root sever
+app.get("/", function (req, res) {
+    res.sendFile(path.join(__dirname, "login.html"));
+});
 
 app.get("/homeuser", function (req, res) {
     res.sendFile(path.join(__dirname, "HomepageUser.html"));
@@ -48,10 +40,7 @@ app.get("/homestaff", function (req, res) {
     res.sendFile(path.join(__dirname, "HomepageStaff.html"));
 });
 
-//root sever
-app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, "login.html"));
-});
+
 
 app.get("/Register", function (req, res) {
     res.sendFile(path.join(__dirname, "Registor.html"));
@@ -113,6 +102,7 @@ app.post("/Register1", async function (req, res) {
     }
 });
 
+// ---------Login-----------
 app.post('/login', function(req, res) {
     const username = req.body.username;
     const password = req.body.password;
