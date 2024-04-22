@@ -24,7 +24,7 @@ app.use(session({
 }));
 // root sever
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, "login.html"));
+    res.sendFile(path.join(__dirname, "/view/login.html"));
 });
 
 app.get("/homeuser", function (req, res) {
