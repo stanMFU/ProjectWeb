@@ -48,9 +48,6 @@ app.use(session({
     store: new MemoryStore({ checkPeriod: 86400000 })
 }));
 
-
-
-
 // Updating rooms to free status at midnight everyday
 cron.schedule('0 0 * * *', async () => {
     // Runs at midnight every day
@@ -683,14 +680,6 @@ app.post("/api/add-room", (req, res) => {
     });
   });
   
-  
-
-
-
-
-
-
-
 app.get('/logout', logoutUser);
 
 // Utility routes
@@ -747,10 +736,6 @@ function getResolvedRequests(req, res) {
     `;
     con.query(sql, handleQueryResponse(res));
 }
-
-
-
-
 
 function logoutUser(req, res) {
     req.session.destroy(function (err) {
