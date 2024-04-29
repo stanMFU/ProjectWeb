@@ -950,6 +950,3 @@ app.delete('/api/rooms/delete/:roomId', async (req, res) => {
         res.status(500).json({ success: false, error: 'Failed to delete room' });
     }
 });
-
-// HI
-//HI Too 1234567
