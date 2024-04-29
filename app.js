@@ -31,13 +31,12 @@ app.use(cors()); // This will allow all CORS requests
         throw err;
     }
 }
-
+// ========== System Route ===========
 // Middleware
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 
 // Session management
 app.use(session({
