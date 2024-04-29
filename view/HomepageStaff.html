@@ -268,11 +268,11 @@ function deleteRoom(roomId) {
         function getClassByStatus(status) {
             switch (status.toLowerCase()) {
                 case 'free':
-                    return 'bg-dark';
+                    return 'bg-success';
                 case 'pending':
-                    return 'bg-warning';
-                case 'reserved':
                     return 'bg-primary';
+                case 'reserved':
+                    return 'bg-warning';
                 case 'disabled':
                     return 'bg-danger';
                 default:
