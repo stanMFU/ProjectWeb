@@ -8,144 +8,218 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <title>HHOMEPAGE</title>
+    <title>HOMEPAGE</title>
     <style>
         .card-body {
             display: grid;
-            grid-template-rows: repeat(4, 1fr); /* Creates four equal-height rows */
-            gap: 10px; /* Sets consistent spacing between rows */
+            grid-template-rows: repeat(4, 1fr);
+            gap: 10px;
             padding: 10px;
         }
+
         .booking-btn {
-            height: 40px; /* Fixed height for all buttons */
-            width: 90%; /* Consistent width relative to the card size */
-            margin: auto; /* Centers button in the grid row */
-            padding: 5px 10px; /* Padding inside the button */
+            height: 40px;
+            width: 90%;
+            margin: auto;
+            padding: 5px 10px;
             text-align: center;
             display: flex;
             justify-content: center;
             align-items: center;
-            border: none; /* Removes default button border */
-            color: white; /* Text color */
-            font-size: 16px; /* Text size */
+            border: none;
+            color: white;
+            font-size: 16px;
+            background-color: #000 !important;
+            border-radius: 10px !important;
         }
+
+        .button-status {
+            width: calc(100% - 10px);
+            height: 40px;
+            margin: 5px;
+            padding: 5px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            color: white !important;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: none !important;
+        }
+
         .card {
             width: 100%;
-            max-width: 300px; /* Max width of the card */
-            margin: 10px auto; /* Centering the card with automatic margins */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+            max-width: 300px;
+            margin: 10px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+
+
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-image: url('/public/img/homepage3.jpg');
+            background-size: cover;
+            color: white;
+            text-align: center;
+            padding-top: 20px;
         }
     </style>
-    
-    
-    
 </head>
 
-
-<body class="">
+<body>
     <div class="ps-2 navbar bg-success " style="background-image: url('/public/img/homepage3.jpg');">
         <div>
-            <a href="#" class="text-white navbar ps-5 fw-bold">HOMEPAGE</a>
+            <a href="/HomepageUser.html" class="text-white navbar ps-5 fw-bold">HOMEPAGE</a>
+
         </div>
         <div class="">
-            <a href="#" class="text-white px-4" style="text-decoration: none">History</a>
-            <a href="#" class="text-white px-4" style="text-decoration: none" onclick="openRequestStatus()">Request</a>
-            <img src="/public/img/login.jpg" alt="Logo" width="60px" height="60px" class="rounded-circle shadow ">
-            <button class="btn shadow form text-white"><i class="fas fa-sign-out-alt"></i></button>
+            <a href="/userHistory.html" class="text-white px-4" style="text-decoration: none">History</a>
+            <span id="usernameDisplay" class="text-white px-4">Loading...</span>
+            <img src="/public/img/login.jpg" alt="Logo" width="60px" height="60px" class="rounded-circle shadow"
+                id="logo">
+            <button class="btn shadow form text-white px-4" onclick="logout()"><i
+                    class="fas fa-sign-out-alt px-4"></i></button>
 
         </div>
     </div>
     <div class="border-bottom"></div>
 
-    <div class="bg-dark rounded-5 shadow  mx-5 " style="background-image: url('/public/img/backgrond2.jpg');">
-        <h4 class="p-4 mt-3 text-white  text-center mb-5  fw-bold" id="day">
-            </h5>
+    <div class="bg-dark rounded-5 shadow mx-5" style="background-image: url('/public/img/backgrond2.jpg');">
+        <h4 class="p-4 mt-3 text-white text-center mb-5 fw-bold" id="day">
+        </h4>
     </div>
-    </div>
-    <div id="Roomslot" class="d-flex flex-wrap container  justify-content-center  fw-bold"></div>
+    <button id="checkStatusButton" class="btn btn-dark m-3 d-block mx-auto">Check Status</button>
 
-    <footer class="bg-dark mt-3 pt-5 pb-3" style="background-image: url('/public/img/homepage3.jpg');"></footer>
+    <div id="Roomslot" class="d-flex flex-wrap container justify-content-center fw-bold"></div>
+    <script src="/public/client.js"></script>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; bookingroom.com</p>
+        </div>
+    </footer>
     <script>
-        let Roomslot = [
-            { "title": "Multimedia-001", "Status8_10": "FREE", "Status10_12": "RESERVED", "Status13_15": "DISABLED", "Status15_17": "PENDING", "image": "Multimedia.jpg" },
-            { "title": "Multimedia-002", "Status8_10": "FREE", "Status10_12": "FREE", "Status13_15": "RESERVED", "Status15_17": "FREE", "image": "Multimedia.jpg" },
-            { "title": "Multimedia-003", "Status8_10": "RESERVED", "Status10_12": "PENDING", "Status13_15": "FREE", "Status15_17": "DISABLED", "image": "Multimedia.jpg" },
-            { "title": "Multimedia-004", "Status8_10": "FREE", "Status10_12": "FREE", "Status13_15": "RESERVED", "Status15_17": "PENDING", "image": "Multimedia.jpg" },
-            { "title": "Reading room-001", "Status8_10": "FREE", "Status10_12": "PENDING", "Status13_15": "RESERVED", "Status15_17": "DISABLED", "image": "reading.jpeg" },
-            { "title": "Reading room-002", "Status8_10": "PENDING", "Status10_12": "DISABLED", "Status13_15": "RESERVED", "Status15_17": "FREE", "image": "reading.jpeg" },
-            { "title": "Reading room-003", "Status8_10": "RESERVED", "Status10_12": "PENDING", "Status13_15": "FREE", "Status15_17": "FREE", "image": "reading.jpeg" },
-            { "title": "Reading room-004", "Status8_10": "PENDING", "Status10_12": "DISABLED", "Status13_15": "RESERVED", "Status15_17": "FREE", "image": "reading.jpeg" },
-            { "title": "Study room-001", "Status8_10": "FREE", "Status10_12": "PENDING", "Status13_15": "FREE", "Status15_17": "FREE", "image": "studyroom.jpg" },
-            { "title": "Study room-002", "Status8_10": "PENDING", "Status10_12": "RESERVED", "Status13_15": "FREE", "Status15_17": "FREE", "image": "studyroom.jpg" },
-            { "title": "Study room-003", "Status8_10": "FREE", "Status10_12": "FREE", "Status13_15": "FREE", "Status15_17": "FREE", "image": "studyroom.jpg" },
-            { "title": "Study room-004", "Status8_10": "DISABLED", "Status10_12": "PENDING", "Status13_15": "FREE", "Status15_17": "FREE", "image": "studyroom.jpg" },
-        ];
-        let container = document.querySelector('#Roomslot');
-Roomslot.forEach(room => {
-    let card = document.createElement('div');
+        window.onload = function () {
+            console.log("Fetching rooms...");
+            fetch('/api/rooms')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Data received:", data);
+                    updateRoomCards(data);
+                })
+                .catch(error => console.error('Error fetching rooms:', error));
+        };
+
+        document.body.addEventListener('submit', function (e) {
+            // Check if the target matches what you expect (e.g., a dynamically added form)
+            if (e.target.matches('#dynamicBookingForm')) {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const bookingData = {
+                    roomId: formData.get('roomId'),
+                    timeSlot: formData.get('timeSlot'),
+                    reason: formData.get('reason'),
+                    userId: getUserId()  // Ensure this retrieves the correct user ID
+                };
+
+                // Validate that user ID is not null or undefined
+                if (!bookingData.userId) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'You must be logged in to make a booking.',
+                        footer: '<a href="/login">Go to login page</a>'
+                    });
+                    return;  // Stop the function if no user ID
+                }
+
+                // Call a function to handle the booking data
+                bookRoom(bookingData.roomId, bookingData.timeSlot, bookingData.reason, bookingData.userId);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchRoomsAndUpdateUI();
+            console.log("Fetching rooms...");
+        });
+
+        var roomDetailsMap = {};  // This will store room details indexed by roomId
+        function fetchRoomsAndUpdateUI() {
+    fetch('/api/rooms')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Room data received:', data);
+            roomDetailsMap = {};  // Clear the previous map
+            data.forEach(room => {
+                roomDetailsMap[room.room_id] = room;  // Store each room's details under its room_id
+                createRoomCard(room);  // Create room card with the room data
+            });
+        })
+        .catch(error => console.error('Error fetching rooms:', error));
+}
+
+
+function createRoomCard(room) {
+    const card = document.createElement('div');
     card.className = 'card shadow mx-3 mb-5 p-3 text-center border-dark border-2';
     card.style.width = '290px';
 
-    let card_body = document.createElement('div');
-    card_body.className = 'card-body row';
-    card.appendChild(card_body);
+    // Create the card body that will contain the title and image
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body';
+    card.appendChild(cardBody);
 
-    let card_title = document.createElement('h4');
-    card_title.className = 'card-title';
-    card_title.textContent = room.title;
-    card_body.appendChild(card_title);
+    const cardTitle = document.createElement('h4');
+    cardTitle.className = 'card-title';
+    cardTitle.textContent = room.roomName;
+    cardBody.appendChild(cardTitle);
 
-    // Create and append buttons only for 'FREE' status
-    createStatusButton(card_body, room, room.Status8_10, "8:00-10:00 AM");
-    createStatusButton(card_body, room, room.Status10_12, "10:00-12:00 AM");
-    createStatusButton(card_body, room, room.Status13_15, "13:00-15:00 PM");
-    createStatusButton(card_body, room, room.Status15_17, "15:00-17:00 PM");
+    // Adding an image element to the card
+    const roomImage = document.createElement('img');
+    roomImage.src = `/public/img/${room.img}`;  // Assuming 'img' is the correct attribute containing the image filename
+    roomImage.alt = 'Room Image';
+    roomImage.style = 'width: 100%; height: auto; object-fit: cover;';
+    cardBody.appendChild(roomImage); // Append the image to the card body
 
-    container.appendChild(card); // Ensure card is appended to container
-});
+    const bookButton = document.createElement('button');
+    bookButton.textContent = 'Book Now';
+    bookButton.className = 'btn btn-primary mt-3';  // Add Bootstrap button styles
+    bookButton.onclick = () => openBookingPopup(room.roomId);
+    card.appendChild(bookButton);
 
-
-function createStatusButton(card_body, room, status, label) {
-    if (status === 'FREE') {
-        let button = document.createElement('button');
-        button.className = `booking-btn ${getClassByStatus(status)}`;
-        button.textContent = label;
-        button.setAttribute('onclick', `openBookingPopup(${JSON.stringify(room)}, '${label}')`);
-        card_body.appendChild(button);
-    }
+    document.getElementById('Roomslot').appendChild(card);
 }
 
 
 
+        function openBookingPopup(roomId, timeSlotLabel, userId) {
+    if (!userId) {
+        console.error("User ID is null. User might not be logged in.");
+        Swal.fire({
+            title: 'Session Expired',
+            text: 'Please log in to continue.',
+            icon: 'warning',
+            confirmButtonText: 'Log In',
+            preConfirm: () => {
+                window.location.href = '/login';
+            }
+        });
+        return;
+    }
 
+    // Retrieve the room details from the map using roomId
+    const roomDetails = roomDetailsMap[roomId];
+    const roomImageUrl = roomDetails ? roomDetails.img : "default.jpg"; // Use default image if none available
 
-function openBookingPopup(room, timeSlotLabel) {
-    const bookingFormHtml = `
-        <div style="position: relative; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; padding: 20px;">
-            <div style="display: flex; flex-direction: row; align-items: stretch; max-height: 80vh; overflow: hidden; margin: 10px;">
-                <div class="image-container" style="flex: 1; overflow: hidden; margin-right: 10px; border-radius: 5%;">
-                    <img src="../Public/img/request.jpeg" alt="Request Image" style="width: 100%; height: auto; object-fit: cover;">
-                </div>
-                <div class="form-container" style="flex: 1; background-color: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); overflow: auto; border-radius: 5%;">
-                    <div style="margin-bottom: 20px;">
-                        <h5>| ${room.title} |  | Time: ${timeSlotLabel} |</h5>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label for="details-${room.title}" style="font-weight: bold;">Details</label>
-                        <textarea id="details-${room.title}" name="details" style="width: 100%; height: 100px; resize: none; background-color: #f0f0f0; cursor: default; border: 1px solid #ccc; font-weight: normal; outline: none;" placeholder="Capacity: 3-5 Seats\nMonitor\nWhite Board" readonly onfocus="this.blur();"></textarea>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label for="reason-${room.title}" style="font-weight: bold;">Reason</label>
-                        <textarea id="reason-${room.title}" name="reason" style="width: 100%; height: 100px; resize: none; border: 1px solid #ccc;" placeholder="Enter your reason for booking"></textarea>
-                    </div>
-                    <div class="button-container" style="text-align: center;">
-                        <button class="btn-booking" style="background-color: #000; color: #fff; padding: 10px 20px; border-radius: 5px; font-weight: bold;">Book Now</button>
-                    </div>
-                </div>
-            </div>
-            <i class="fas fa-times close" style="position: absolute; top: 0; right: 0; cursor: pointer; font-size: 2rem; color: black;" onclick="Swal.close();"></i>
-        </div>
-    `;
+    // Generate the booking form HTML with the retrieved room details and image URL
+    const bookingFormHtml = createBookingFormHtml(roomId, timeSlotLabel, roomDetails.details, userId, roomImageUrl);
 
     Swal.fire({
         html: bookingFormHtml,
@@ -157,74 +231,395 @@ function openBookingPopup(room, timeSlotLabel) {
         width: '80%',
         showConfirmButton: false,
         backdrop: true,
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.getPopup().querySelector('.btn-booking').addEventListener('click', () => {
-                Swal.fire('Booking Confirmed', 'Your booking has been successfully made.', 'success');
-            });
-        }
-    });
-}
-
-function openRequestStatus() {
-    const requestStatusHtml = `
-    <div style="position: relative; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; padding: 20px;">
-        <div style="display: flex; flex-direction: row; align-items: stretch; max-height: 80vh; overflow: hidden; margin: 10px;">
-            <div class="image-container" style="flex: 1; overflow: hidden; margin-right: 10px; border-radius: 5%;">
-                <img src="../Public/img/request.jpeg" alt="Request Image" style="width: 100%; height: auto; object-fit: cover;">
-            </div>
-            <div class="form-container" style="flex: 1; background-color: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); overflow: auto; border-radius: 5%;">
-                <div style="margin-bottom: 20px;">
-                    <h5 style="margin: 0;">Room: 001 | Time: 8:00 - 10:00</h5>
-                </div>
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label style="font-weight: bold;">Details</label>
-                    <textarea style="width: 100%; height: 100px; resize: none; background-color: #f0f0f0; cursor: default; border: 1px solid #ccc; font-weight: normal; outline: none;" placeholder="Capacity: 3-5 Seats\nMonitor\nWhite Board" readonly onfocus="this.blur();"></textarea>
-                </div>
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label style="font-weight: bold;">Reason</label>
-                    <textarea style="width: 100%; height: 100px; resize: none; border: 1px solid #ccc;" placeholder="Enter your reason for booking" readonly></textarea>
-                </div>
-                <div class="button-container" style="text-align: center;">
-                    <div class="status status-pending" style="font-size: 18px; margin-bottom: 10px; color: #c1522d; font-weight: bold;"><span>Booking Status: Pending Approval</span></div>
-                </div>
-            </div>
-        </div>
-        <i class="fas fa-times close" style="position: absolute; top: 0; right: 0; cursor: pointer; font-size: 2rem; color: black;" onclick="Swal.close();"></i>
-    </div>
-    `;
-
-    Swal.fire({
-        html: requestStatusHtml,
-        showCloseButton: false,
-        customClass: {
-            popup: 'swal-wide',
-            container: 'swal-container'
-        },
-        width: '80%',
-        showConfirmButton: false,
-        backdrop: true,
         allowOutsideClick: false
     });
 }
-
-
-function getClassByStatus(status) {
-    switch (status) {
-        case 'FREE': return 'btn card-text text-white shadow mt-2 bg-dark px-5';
-        case 'PENDING': return 'btn card-text text-white shadow mt-2 bg-warning px-5';
-        case 'RESERVED': return 'btn card-text text-white shadow mt-2 bg-primary px-5';
-        case 'DISABLED': return 'btn card-text text-white shadow mt-2 bg-danger px-5';
-        default: return 'btn card-text text-white shadow mt-2 bg-secondary px-5';
-    }
+        function createBookingFormHtml(roomId, timeSlotLabel, roomDetails, userId, imgURL) {
+    return `
+        <div class"rounded-5"style="position: relative; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; padding: 0px;">
+            <div class"bg-white" " style="display: flex; flex-direction: row; align-items: stretch; max-height: 80vh; overflow: hidden; margin:0px;">
+                <div class="image-container" style="flex: 1; overflow: hidden; margin-right: 0px; border-radius: 5%;">
+                    <img src="/public/img/${imgURL}" alt="Room Image" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="form-container" style="flex: 1; background-color: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); overflow: auto; border-radius: 5%;">
+                  <div style="margin-bottom: 20px;">
+                        <h5>Room ${roomId} | Time: ${timeSlotLabel}</h5>
+                        <textarea id="details-${roomId}" style="width: 100%; height: 100px; resize: none; background-color: #f0f0f0; border: 1px solid #ccc;" readonly>${roomDetails}</textarea>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label for="reason-${roomId}" style="font-weight: bold;">Booking Reason</label>
+                        <textarea id="reason-${roomId}" name="reason" style="width: 100%; height: 100px; resize: none; border: 1px solid #ccc;" required></textarea>
+                    </div>
+                    <div style="text-align: center;">
+                        <button type="button" onclick="bookRoom(${roomId}, '${timeSlotLabel}', document.getElementById('reason-${roomId}').value, ${userId})" style="background-color: #000; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <button onclick="Swal.close();" style="position: absolute; top: 0; right: 0; border: none; background: none; font-size: 1.5rem; color: black; cursor: pointer;">&times;</button>
+        </div>
+    `;
 }
 
-var dayElement = document.getElementById('day');
-var currentDate = new Date();
-var day = currentDate.getDate();
-var month = currentDate.getMonth() + 1;
-var year = currentDate.getFullYear();
-dayElement.textContent = day + ' / ' + month + ' / ' + year;
+
+        function formatTimeSlot(timeSlot) {
+            // Assuming timeSlot comes in format '13:00-15:00' and needs to be '13-15'
+            return timeSlot.split('-').map(part => part.split(':')[0]).join('-');
+        }
+
+        function bookRoom(roomId, timeSlot, reason, userId) {
+            console.log("Attempting to book room with details:", { roomId, timeSlot, reason, userId });
+
+            const formattedTimeSlot = formatTimeSlot(timeSlot); // Ensure this function correctly formats your time slot to match database ENUM values
+
+            fetch('/api/book-room', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ roomId, timeSlot: formattedTimeSlot, reason, userId })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => Promise.reject(data.error)); // Extracting error message from response body
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Booking successful:', data);
+                    Swal.fire({
+                        title: 'Booking Successful',
+                        text: 'Your room has been booked.',
+                        icon: 'success'
+                    }).then(() => {
+                        // Reload the page after user clicks "OK" on the success alert
+                        window.location.href = window.location.href;
+                    });
+                })
+                .catch(error => {
+                    console.error('Booking failed:', error);
+                    Swal.fire('Booking Failed', error, 'error'); // Displaying specific error message from server
+                });
+        }
+
+
+        function setUserId(userId) {
+            sessionStorage.setItem('userId', userId);
+            console.log("UserId set in sessionStorage:", userId); // Debugging log
+        }
+
+        function getUserId() {
+            const userId = sessionStorage.getItem('userId');
+            console.log("Retrieved UserId from sessionStorage:", userId); // Debugging log
+            if (!userId) {
+                console.error("User ID is null. User might not be logged in.");
+                Swal.fire({
+                    title: 'Session Expired',
+                    text: 'Please log in to continue.',
+                    icon: 'warning',
+                    confirmButtonText: 'Log In',
+                    preConfirm: () => {
+                        window.location.href = '/login';
+                    }
+                });
+            }
+            return userId;
+        }
+
+
+        function checkSession() {
+            // Call this function on page load or when rendering navbar
+            const userId = getUserId();
+            if (userId) {
+                // Update navbar or any other component
+                console.log("User is logged in with ID:", userId);
+            } else {
+                console.log("No user ID found in sessionStorage.");
+            }
+        }
+
+        function getRoomDetails(req, res) {
+            const roomId = req.query.roomId; // Accessing the roomId sent as a query parameter
+            if (!roomId) {
+                return res.status(400).json({ error: "Room ID is required" }); // Validation for presence of roomId
+            }
+
+            const sql = 'SELECT * FROM rooms WHERE room_id = ?'; // SQL query to select room
+            con.query(sql, [roomId], (err, results) => {
+                if (err) {
+                    console.error('Error fetching room details:', err);
+                    return res.status(500).json({ error: "Database server error: " + err.message });
+                }
+                if (results.length === 0) {
+                    return res.status(404).json({ error: "Room not found" }); // Handling case where no room is found
+                }
+                res.json(results[0]); // Respond with the room details
+            });
+        }
+
+        function fetchRoomDetails(roomId) {
+            fetch(`/api/room-details?roomId=${roomId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch room details');
+                    }
+                    return response.json();
+                })
+                .then(roomDetails => {
+                    console.log('Room Details:', roomDetails);
+                    // Display the room details on the page or handle them as needed
+                })
+                .catch(error => {
+                    console.error('Error fetching room details:', error);
+                });
+        }
+
+
+        function logout() {
+            fetch('/logout')
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/';
+                    } else {
+                        throw new Error('Failed to logout');
+                    }
+                })
+                .catch(error => {
+                    console.error('Logout error:', error);
+                    alert('Error logging out');
+                });
+        }
+
+        function updateRoomCards(rooms) {
+            const container = document.getElementById('Roomslot');
+            if (!container) {
+                console.error('Roomslot container not found');
+                return;
+            }
+
+            container.innerHTML = ''; // Clear previous cards
+            rooms.forEach(room => {
+                let card = createRoomCard(room);
+                container.appendChild(card);
+            });
+        }
+
+        function createRoomCard(room) {
+            const card = document.createElement('div');
+            card.className = 'card shadow mx-3 mb-5 p-3 text-center border-dark border-2';
+            card.style.width = '290px';
+
+            const cardBody = document.createElement('div');
+            cardBody.className = 'card-body';
+            card.appendChild(cardBody);
+
+            const cardTitle = document.createElement('h4');
+            cardTitle.className = 'card-title';
+            cardTitle.textContent = room.room_name;
+            cardBody.appendChild(cardTitle);
+
+            addBookingButtons(room, cardBody);
+
+            return card;
+        }
+
+        function addBookingButtons(room, cardBody) {
+            // const currentHour = new Date().getHours();
+            const currentHour = 7;
+            const slots = [
+                { key: 'status_8_10', label: '8:00-10:00' },
+                { key: 'status_10_12', label: '10:00-12:00' },
+                { key: 'status_13_15', label: '13:00-15:00' },
+                { key: 'status_15_17', label: '15:00-17:00' }
+            ];
+
+            slots.forEach(slot => {
+                if (currentHour < parseInt(slot.label.split('-')[0]) && room[slot.key] === 'Free') {
+                    const button = document.createElement('button');
+                    button.className = `booking-btn btn ${getClassByStatus(room[slot.key])}`;
+                    button.textContent = slot.label;
+                    button.onclick = () => {
+                        console.log(`Booking for ${slot.label} clicked. Room ID: ${room.room_id}`);
+                        const userId = getUserId();
+                        if (!userId) {
+                            Swal.fire({
+                                title: 'Session Expired',
+                                text: 'Please log in to continue.',
+                                icon: 'warning',
+                                confirmButtonText: 'Log In',
+                                preConfirm: () => {
+                                    window.location.href = '/login';
+                                }
+                            });
+                            return;
+                        }
+                        openBookingPopup(room.room_id, slot.label, userId);
+                    };
+                    cardBody.appendChild(button);
+
+                }
+            });
+        }
+
+
+
+
+        function getClassByStatus(status) {
+            switch (status.toLowerCase()) {
+                case 'free': return 'btn btn-success';
+                case 'pending': return 'btn btn-warning';
+                case 'reserved': return 'btn btn-primary';
+                case 'disabled': return 'btn btn-secondary';
+                case 'expired': return 'btn btn-dark'; // Handle expired or past slots
+                default: return 'btn btn-dark';
+            }
+        }
+
+
+        // Assuming this code would be part of your login success logic
+
+
+        var dayElement = document.getElementById('day');
+        var currentDate = new Date();
+        var day = currentDate.getDate();
+        var month = currentDate.getMonth() + 1;
+        var year = currentDate.getFullYear();
+        dayElement.textContent = day + ' / ' + month + ' / ' + year; document.getElementById('checkStatusButton').
+
+
+            addEventListener('click', function () {
+                const userId = getUserId(); // Ensure this function correctly retrieves the current user ID
+                if (!userId) {
+                    alert("You must be logged in to check booking status.");
+                    return;
+                }
+                checkPendingBooking(userId);
+            });
+            function checkPendingBooking(userId) {
+    fetch(`/api/check-pending-booking?userId=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.hasBooking) {
+                let messages = data.bookings.map(booking => {
+                    let color = booking.status === 'Approved' ? '#28a745' : booking.status === 'Rejected' ? '#dc3545' : '#ffc107';
+                    let icon = booking.status === 'Approved' ? '✅' : booking.status === 'Rejected' ? '❌' : '⏳';
+                    return `<div style="color: ${color}; margin-bottom: 10px;">
+                                <b>${icon} ${booking.status} Booking:</b><br>
+                                Room: <span style="color: ${color};">${booking.roomName}</span><br>
+                                Date: <strong>${new Date(booking.date).toLocaleDateString()}</strong><br>
+                                Time Slot: <strong>${booking.timeSlot}</strong><br>
+                            </div>`;
+                }).join('');
+
+                Swal.fire({
+                    title: '<strong>Booking Status</strong>',
+                    html: messages,
+                    icon: 'info',
+                    showCancelButton: data.bookings.some(booking => booking.status === 'Pending'),
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok',
+                    cancelButtonText: 'Cancel Booking'
+                }).then((result) => {
+                    if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
+                        const pendingBooking = data.bookings.find(b => b.status === 'Pending');
+                        if (pendingBooking) {
+                            cancelBooking(pendingBooking.bookingId);
+                        }
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'All Clear!',
+                    text: 'You have no bookings today.',
+                    icon: 'success',
+                    showConfirmButton: true,
+                    timer: 1800
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Failed to fetch booking status:', error);
+            Swal.fire('Error', 'Unable to check the booking status.', 'error');
+        });
+}
+
+
+            function cancelBooking(bookingId) {
+                if (!bookingId) {
+                    console.error('No booking ID provided');
+                    Swal.fire('Error', 'Booking ID is missing.', 'error');
+                    return;
+                }
+
+                fetch(`/api/bookings/${bookingId}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            // Handle non-JSON responses gracefully
+                            if (response.headers.get('content-type').indexOf('application/json') !== -1) {
+                                return response.json().then(data => {
+                                    // Log the error message for debugging
+                                    console.error('Cancellation failed:', data);
+                                    throw new Error(data.error || 'Unknown error');
+                                });
+                            } else {
+                                // Handle non-JSON responses, such as text or HTML
+                                console.error('Cancellation failed:', response.statusText);
+                                throw new Error('Cancellation failed. Please try again.');
+                            }
+                        }
+                        return response.json();
+                    })
+                    .then(result => {
+                        console.log('Cancellation successful:', result);
+                        Swal.fire('Cancelled!', 'Your booking has been successfully cancelled.', 'success').then(() => {
+                            // Reload the page or fetch new data
+                            window.location.href = window.location.href; // This will refresh the page
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error cancelling booking:', error);
+                        Swal.fire('Error', `Failed to cancel booking: ${error.message}`, 'error');
+                    });
+            }
+
+
+
+        
+
+        function bookRoom(roomId, timeSlot, reason, userId) {
+            console.log("Attempting to book room with details:", { roomId, timeSlot, reason, userId });
+
+            const formattedTimeSlot = formatTimeSlot(timeSlot); // Ensure this function correctly formats your time slot to match database ENUM values
+
+            fetch('/api/book-room', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ roomId, timeSlot: formattedTimeSlot, reason, userId })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => Promise.reject(data.error)); // Extracting error message from response body
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Booking successful:', data);
+                    Swal.fire({
+                        title: 'Booking Successful',
+                        text: 'Your room has been booked.',
+                        icon: 'success'
+                    }).then(() => {
+                        // Reload the page after user clicks "OK" on the success alert
+                        window.location.href = window.location.href;
+                    });
+                })
+                .catch(error => {
+                    console.error('Booking failed:', error);
+                    Swal.fire('Booking Failed', error, 'error'); // Displaying specific error message from server
+                });
+        }
 
     </script>
 </body>

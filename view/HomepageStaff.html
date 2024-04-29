@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,133 +7,508 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <title>HOMEPAGE</title>
-</head>
+    <title>HOMEPAGE Staff</title>
+    <style>
+        .card-body {
+            display: grid;
+            grid-template-rows: repeat(4, 1fr);
+            gap: 10px;
+            padding: 10px;
+        }
+        .card {
+            width: 100%;
+            max-width: 300px;
+            margin: 10px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .button-status {
+            width: calc(100% - 10px);
+            height: 40px;
+            margin: 5px;
+            padding: 5px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            color: white !important;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: none !important;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-image: url('/public/img/homepage3.jpg');
+            background-size: cover;
+            color: white;
+            text-align: center;
+            padding-top: 20px;
+        }
+        .room-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px; /* Adjusted margin */
+    height: 30px; /* Set a fixed height */
+    line-height: 30px; /* Vertically center the text */
+}
 
-<body class="">
+/* Add button styling */
+.btn-add {
+    margin-top: 20px;
+    margin-right: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    background-color: #28a745; /* Green color */
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+ 
+}
+.container {
+    display: flex;
+    justify-content: center; /* Center the button horizontally */
+    margin-bottom: 2rem; /* Increase bottom margin for spacing */
+}
+
+
+
+.btn-add:hover {
+    background-color: #218838; /* Darker green color on hover */
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
     <div class="ps-2 navbar bg-dark " style="background-image: url('/public/img/homepage3.jpg');">
         <div>
-            <a href="#" class="text-white navbar ps-5">HOMEPAGE</a>
+            <a href="/HomepageStaff.html" class="text-white navbar ps-5">HOMEPAGE</a>
         </div>
-        <div class="">
-            <a href="#" class="text-white px-4" style="text-decoration: none">History</a>
-            <a href="#" class="text-white px-4" style="text-decoration: none">Request</a>
-            <img src="/public/img/login.jpg" alt="Logo" width="60px" height="60px" class="rounded-circle shadow ">
-            <button class="btn shadow form text-white"><i class="fas fa-sign-out-alt"></i></button>
-
+        <div>
+            <a href="/staffHistory.html" class="text-white px-4" style="text-decoration: none">History</a>
+            <a href="/dashboard.html" class="text-white px-4" style="text-decoration: none">Dashboard</a>
+            <span id="usernameDisplay" class="shadow form text-white px-4">Loading...</span>
+            <script src="/public/client.js"></script>
+            <img src="/public/img/login.jpg" alt="Logo" width="60px" height="60px" class="rounded-circle shadow">
+            <button class="btn shadow form text-white" onclick="logout()"><i class="fas fa-sign-out-alt px-4"></i></button>
         </div>
     </div>
+
+    <!-- Border line -->
     <div class="border-bottom"></div>
 
-    <div class="bg-dark rounded-5 shadow " style="background-image: url('/public/img/backgrond2.jpg');">
-        <h4 class="p-4 mt-3 mx-5 text-white shadow text-center mb-3  fw-bold" id="day" ></h5>
+    <!-- Background div with date -->
+    <div class="bg-dark rounded-5 shadow mx-5" style="background-image: url('/public/img/backgrond2.jpg');">
+        <h4 class="p-4 mt-3 text-white text-center mb-5 fw-bold" id="day"></h5>
     </div>
-    <div class="d-flex flex-wrap container justify-content-end mb-4 me-3" >
-        <button class="btn shadow form bg-success text-white ms-2 px-4">ADD</button>
-        <button class="btn shadow form bg-warning text-white ms-2 px-4">EDIT</button>
-    </div>
-    </div>
-    <div id="Roomslot" class="d-flex flex-wrap container  justify-content-center  fw-bold"></div>
 
-    <footer class="bg-dark mt-3 pt-5 pb-3" style="background-image: url('/public/img/homepage3.jpg');"></footer>
+<!-- Add and edit buttons -->
+<div class="container d-flex justify-content-center mb-4 "> <!-- Modified container class -->
+    <button class="btn btn-success shadow form px-5" onclick="addRoomPrompt()">Add Room</button>
+</div>
+
+
+    <!-- Room slot container -->
+    <div id="Roomslot" class="d-flex flex-wrap container justify-content-center fw-bold"></div>
+
+    <!-- JavaScript for handling room operations -->
     <script>
-        let Roomslot = [
-            { "title": "Multimedia-001", "Status8_10": "FREE", "Status10_12": "RESERVED", "Status13_15": "DISABLED", "Status15_17": "PENDING", "image": "Multimedia.jpg" },
-            { "title": "Multimedia-002", "Status8_10": "PENDING", "Status10_12": "DISABLED", "Status13_15": "RESERVED", "Status15_17": "FREE", "image": "Multimedia.jpg" },
-            { "title": "Multimedia-003", "Status8_10": "RESERVED", "Status10_12": "PENDING", "Status13_15": "FREE", "Status15_17": "DISABLED", "image": "Multimedia.jpg" },
-            { "title": "Multimedia-004", "Status8_10": "DISABLED", "Status10_12": "FREE", "Status13_15": "RESERVED", "Status15_17": "PENDING", "image": "Multimedia.jpg" },
-            { "title": "Reading room-001", "Status8_10": "FREE", "Status10_12": "PENDING", "Status13_15": "RESERVED", "Status15_17": "DISABLED", "image": "reading.jpeg" },
-            { "title": "Reading room-002", "Status8_10": "PENDING", "Status10_12": "DISABLED", "Status13_15": "RESERVED", "Status15_17": "FREE", "image": "reading.jpeg" },
-            { "title": "Reading room-003", "Status8_10": "RESERVED", "Status10_12": "PENDING", "Status13_15": "FREE", "Status15_17": "FREE", "image": "reading.jpeg" },
-            { "title": "Reading room-004", "Status8_10": "PENDING", "Status10_12": "DISABLED", "Status13_15": "RESERVED", "Status15_17": "FREE", "image": "reading.jpeg" },
-            { "title": "Study room-001", "Status8_10": "FREE", "Status10_12": "PENDING", "Status13_15": "FREE", "Status15_17": "FREE", "image": "studyroom.jpg" },
-            { "title": "Study room-002", "Status8_10": "PENDING", "Status10_12": "RESERVED", "Status13_15": "FREE", "Status15_17": "FREE", "image": "studyroom.jpg" },
-            { "title": "Study room-003", "Status8_10": "RESERVED", "Status10_12": "FREE", "Status13_15": "FREE", "Status15_17": "FREE", "image": "studyroom.jpg" },
-            { "title": "Study room-004", "Status8_10": "DISABLED", "Status10_12": "PENDING", "Status13_15": "FREE", "Status15_17": "FREE", "image": "studyroom.jpg" },
-        ];
-
-
-        let container = document.querySelector('#Roomslot');
-        Roomslot.forEach(room => {
-            let card = document.createElement('div');
-            card.className = 'card shadow mx-3 mb-5 p-3 text-center border-dark border-';
-            card.style.width = '290px';
-
-            let card_body = document.createElement('div');
-            card_body.className = 'card-body row ';
-            card.append(card_body);
-
-            let card_title = document.createElement('h4');
-            card_title.className = 'card-title';
-            card_title.textContent = room.title;
-            card_body.append(card_title);
-
-            let card_8_10 = document.createElement('btn');
-            if (room.Status8_10 === 'FREE') {
-                card_8_10.className = 'btn card-text text-white shadow mt-2 bg-dark px-5';
-            } else if (room.Status8_10 === 'PENDING') {
-                card_8_10.className = 'btn card-text text-white shadow mt-2 bg-warning px-5';
-            } else if (room.Status8_10 === 'RESERVED') {
-                card_8_10.className = 'btn card-text text-white shadow mt-2 bg-primary px-5';
-            } else if (room.Status8_10 == 'DISABLED') {
-                card_8_10.className = 'btn card-text text-white shadow mt-2 bg-danger px-5';
-            }
-            card_8_10.textContent = "8:00-10:00 AM";
-            card_body.append(card_8_10);
-            container.append(card);
-
-            let card_10_12 = document.createElement('btn');
-            if (room.Status10_12 === 'FREE') {
-                card_10_12.className = 'btn card-text text-white shadow mt-2 bg-dark px-5';
-            } else if (room.Status10_12 === 'PENDING') {
-                card_10_12.className = 'btn card-text text-white shadow mt-2 bg-warning px-5';
-            } else if (room.Status10_12 === 'RESERVED') {
-                card_10_12.className = 'btn card-text text-white shadow mt-2 bg-primary px-5';
-            } else if (room.Status10_12 == 'DISABLED') {
-                card_10_12.className = 'btn card-text text-white shadow mt-2 bg-danger px-5';
-            }
-            card_10_12.textContent = "10:00-12:00 AM";
-            card_body.append(card_10_12);
-            container.append(card);
-            
-            let card_13_15 = document.createElement('btn');
-            if (room.Status13_15 === 'FREE') {
-                card_13_15.className = 'btn card-text text-white shadow mt-2 bg-dark px-5';
-            } else if (room.Status13_15 === 'PENDING') {
-                card_13_15.className = 'btn card-text text-white shadow mt-2 bg-warning px-5';
-            } else if (room.Status13_15 === 'RESERVED') {
-                card_13_15.className = 'btn card-text text-white shadow mt-2 bg-primary px-5';
-            } else if (room.Status13_15 == 'DISABLED') {
-                card_13_15.className = 'btn card-text text-white shadow mt-2 bg-danger px-5';
-            }
-            card_13_15.textContent = "13:00-15:00 PM";
-            card_body.append(card_13_15);
-            container.append(card);
-
-            let card_15_17 = document.createElement('btn');
-            if (room.Status15_17 === 'FREE') {
-                card_15_17.className = 'btn card-text text-white shadow mt-2 bg-dark px-5';
-            } else if (room.Status15_17 === 'PENDING') {
-                card_15_17.className = 'btn card-text text-white shadow mt-2 bg-warning px-5';
-            } else if (room.Status15_17 === 'RESERVED') {
-                card_15_17.className = 'btn card-text text-white shadow mt-2 bg-primary px-5';
-            } else if (room.Status15_17 == 'DISABLED') {
-                card_15_17.className = 'btn card-text text-white shadow mt-2 bg-danger px-5';
-            }
-            card_15_17.textContent = "15:00-17:00 PM";
-            card_body.append(card_15_17);
-            container.append(card);
-
-
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDate();
+            fetchRooms();
         });
 
-        var dayElement = document.getElementById('day');
-        var currentDate = new Date();
-        var day = currentDate.getDate();
-        var month = currentDate.getMonth() + 1;
-        var year = currentDate.getFullYear();
-        dayElement.textContent = day + ' / ' + month + ' / ' + year;
+        function updateDate() {
+            var dayElement = document.getElementById('day');
+            var currentDate = new Date();
+            var dateString = currentDate.getDate() + ' / ' + (currentDate.getMonth() + 1) + ' / ' + currentDate.getFullYear();
+            dayElement.textContent = dateString;
+        }
+
+        function fetchRooms() {
+            fetch('/api/rooms')
+                .then(response => response.json())
+                .then(data => {
+                    updateRoomCards(data);
+                })
+                .catch(error => console.error('Error fetching rooms:', error));
+        }
+
+        function updateRoomCards(rooms) {
+    let container = document.querySelector('#Roomslot');
+    container.innerHTML = '';
+
+    rooms.forEach(room => {
+        let card = document.createElement('div');
+        card.className = 'card shadow mx-3 mb-5 p-3 text-center border-dark border-2';
+        card.style.width = '290px';
+        let card_body = document.createElement('div');
+        card_body.className = 'card-body';
+        card.appendChild(card_body);
+
+        let roomNameDiv = document.createElement('div');
+        roomNameDiv.className = 'room-name mb-2'; // Adjust margin
+        roomNameDiv.textContent = room.room_name;
+        card_body.appendChild(roomNameDiv);
+
+        let detailsDiv = document.createElement('div');
+        detailsDiv.className = 'room-details'; // Remove margin
+        detailsDiv.textContent = 'Details: ' + room.details;
+        card_body.appendChild(detailsDiv);
+
+        // Add buttons, switches, and delete button for each time slot
+        let allSlotsFreeOrDisabled = true;
+        ['status_8_10', 'status_10_12', 'status_13_15', 'status_15_17'].forEach(statusKey => {
+            let timeSlotDiv = document.createElement('div');
+            timeSlotDiv.className = 'mb-3 d-flex flex-column align-items-center'; // Adjust margin and align items
+            card_body.appendChild(timeSlotDiv);
+
+            let statusBtn = document.createElement('button');
+            statusBtn.className = `btn button-status ${getClassByStatus(room[statusKey])} mb-2`; // Adjust margin
+            statusBtn.textContent = `${statusKey.replace(/_/g, ' ').toUpperCase()}: ${room[statusKey]}`;
+            timeSlotDiv.appendChild(statusBtn);
+
+            let switchContainer = document.createElement('div');
+            switchContainer.className = 'form-check form-switch';
+            timeSlotDiv.appendChild(switchContainer);
+
+            let switchInput = document.createElement('input');
+            switchInput.className = 'form-check-input';
+            switchInput.type = 'checkbox';
+            switchInput.id = `${statusKey}-${room.room_id}`;
+            switchInput.checked = room[statusKey] === 'Disabled'; // Check if the time slot is disabled
+            switchInput.disabled = room[statusKey] === 'Pending' || room[statusKey] === 'Reserved'; // Disable if pending or reserved
+            switchInput.onchange = (e) => {
+                updateRoomStatus(room.room_id, statusKey, e.target.checked ? 'Disabled' : 'Free');
+            };
+            switchContainer.appendChild(switchInput);
+
+            let switchLabel = document.createElement('label');
+            switchLabel.className = 'form-check-label';
+            switchLabel.htmlFor = `${statusKey}-${room.room_id}`;
+            switchLabel.textContent = room[statusKey] === 'Disabled' ? 'Enable' : 'Disable'; // Text based on status
+            switchContainer.appendChild(switchLabel);
+
+            allSlotsFreeOrDisabled &= (room[statusKey] === 'Disabled' || room[statusKey] === 'Free');
+        });
+
+        let editBtn = document.createElement('button');
+        editBtn.className = 'btn btn-warning btn-sm mt-3';
+        editBtn.textContent = 'Edit';
+        editBtn.onclick = function() { editRoom(room.room_id, room.room_name, room.details); };
+        card_body.appendChild(editBtn);
+        
+        if (allSlotsFreeOrDisabled) {
+            let deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-danger btn-sm mt-3';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.onclick = function() { deleteRoom(room.room_id); };
+            card_body.appendChild(deleteBtn);
+        }
+
+        container.appendChild(card);
+    });
+}
+
+
+
+function deleteRoom(roomId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/api/rooms/delete/${roomId}`, { method: 'DELETE' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: 'The room has been deleted successfully.',
+                            icon: 'success'
+                        }).then(() => {
+                            fetchRooms(); // Refresh the room list to reflect changes
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Failed to delete room: ' + data.error,
+                            icon: 'error'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Error deleting room: ' + error.message,
+                        icon: 'error'
+                    });
+                });
+        }
+    });
+}
+
+
+
+
+        // Function to get CSS class based on room status
+        function getClassByStatus(status) {
+            switch (status.toLowerCase()) {
+                case 'free':
+                    return 'bg-dark';
+                case 'pending':
+                    return 'bg-warning';
+                case 'reserved':
+                    return 'bg-primary';
+                case 'disabled':
+                    return 'bg-danger';
+                default:
+                    return 'bg-secondary';
+            }
+        }
+        function addRoomPrompt() {
+    Swal.fire({
+        title: 'Add New Room',
+        html: `
+            <style>
+                .swal2-container {
+                    padding: 50px; /* Ensures there's padding around the popup */
+                }
+                .swal2-select, .swal2-input {
+                    width: 80%; /* Adjusted to 100% of the Swal content area */
+                    padding: .375rem .75rem;
+                    font-size: 1rem;
+                    line-height: 1.5;
+                    color: #495057;
+                    background-color: #fff;
+                    background-clip: padding-box;
+                    border: 1px solid #ced4da;
+                    border-radius: .25rem;
+                    box-sizing: border-box; /* Makes sure the padding and border are included in the width */
+                }
+                .swal2-select {
+                    margin-bottom: 10px; /* Provides space between the select and the input */
+                }
+            </style>
+            <select id="roomType" class="swal2-select">
+                <option disabled selected>Select Room Type</option>
+                <option value="Multimedia Room">Multimedia Room</option>
+                <option value="Study Room">Study Room</option>
+                <option value="Reading Room">Reading Room</option>
+            </select>
+            <input id="roomDetails" class="swal2-input" placeholder="Enter Details (e.g., Capacity: 20)">
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Add Room',
+        cancelButtonText: 'Cancel',
+        customClass: {
+            confirmButton: 'add-room-confirm-btn',
+            cancelButton: 'add-room-cancel-btn'
+        },
+        preConfirm: () => {
+            const roomType = document.getElementById('roomType').value;
+            const roomDetails = document.getElementById('roomDetails').value;
+            if (!roomType || !roomDetails) {
+                Swal.showValidationMessage('Please enter all required fields');
+            }
+            return { roomType: roomType, roomDetails: roomDetails };
+        }
+    }).then((result) => {
+        if (result.isConfirmed && result.value) {
+            addRoom(result.value.roomType, result.value.roomDetails);
+        }
+    });
+}
+
+
+
+function editRoom(roomId, currentName, currentDetails, currentType) {
+    Swal.fire({
+        title: 'Edit Room Details',
+        html: `
+            <style>
+                /* Add your custom styles here if needed */
+            </style>
+            <div class="edit-room-container">
+                <div class="edit-room-section">
+                    <h5 class="edit-room-heading">Current Room Name:</h5>
+                    <p class="edit-room-info">${currentName}</p>
+                </div>
+                <div class="edit-room-section">
+                    <h5 class="edit-room-heading">Current Details:</h5>
+                    <p class="edit-room-info">${currentDetails}</p>
+                </div>
+                <div class="edit-room-section">
+                    <select id="roomTypeEdit" class="form-control swal2-input">
+                        <option value="" ${currentType ? '' : 'selected'}>No Change</option>
+                        <option value="Multimedia Room" ${currentType === 'Multimedia Room' ? 'selected' : ''}>Multimedia Room</option>
+                        <option value="Study Room" ${currentType === 'Study Room' ? 'selected' : ''}>Study Room</option>
+                        <option value="Reading Room" ${currentType === 'Reading Room' ? 'selected' : ''}>Reading Room</option>
+                    </select>
+                    <input id="roomDetails" class="form-control edit-room-input" placeholder="New Details (leave blank if no change)">
+                </div>
+            </div>`,
+        showCloseButton: true,
+        showCancelButton: true,
+        confirmButtonColor: '#d33', // Red color for the confirm button
+        cancelButtonColor: '#3085d6', // Blue color for the cancel button
+        confirmButtonText: 'Save Changes',
+        cancelButtonText: 'Cancel',
+        focusConfirm: false,
+        customClass: {
+            confirmButton: 'edit-room-confirm-btn', // Class for the confirm button
+            cancelButton: 'edit-room-cancel-btn' // Class for the cancel button
+        },
+        preConfirm: () => {
+            const roomType = Swal.getPopup().querySelector('#roomTypeEdit').value;
+            const roomDetails = Swal.getPopup().querySelector('#roomDetails').value;
+            return { roomType: roomType, roomDetails: roomDetails };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            if (result.value.roomType !== currentType || result.value.roomDetails !== currentDetails) {
+                updateRoom(roomId, result.value.roomType, result.value.roomDetails);
+                location.reload(); // Reload the page
+            } else {
+                Swal.fire('No changes', 'You did not make any changes.', 'info');
+            }
+        }
+    });
+}
+
+
+
+function updateRoom(roomId, roomType, roomDetails) {
+    console.log(`Updating room ID: ${roomId}, Type: ${roomType}, Details: ${roomDetails}`);
+    
+    const payload = {
+        roomType: roomType,
+        details: roomDetails
+    };
+
+    fetch(`/api/rooms/update/${roomId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Update successful', data);
+        fetchRooms(); // Refresh the room list
+    })
+    .catch(error => console.error('Failed to update room:', error));
+}
+
+function addRoom(roomType, roomDetails) {
+    const payload = {
+        roomType: roomType,
+        details: roomDetails
+    };
+    window.location.reload();
+    fetch('/api/rooms/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        
+        body: JSON.stringify(payload)
+        
+    })
+    
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error, status = ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                title: 'Success!',
+                text: 'The room has been added successfully.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.reload(); // Reloads the page to reflect the changes
+            });
+        } else {
+            throw new Error(data.error || 'Failed to add room');
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            title: 'Error!',
+            text: 'Failed to add room: ' + error.message,
+            icon: 'error'
+        });
+    });
+}
+
+
+
+
+
+        function logout() {
+            fetch('/logout')
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/'; // Redirect to the login page
+                    } else {
+                        throw new Error('Failed to logout');
+                    }
+                })
+                .catch(error => {
+                    console.error('Logout error:', error);
+                    alert('Error logging out');
+                });
+        }
+        function updateRoomStatus(roomId, statusKey, newStatus) {
+    console.log(`Updating status for Room ID: ${roomId}, Key: ${statusKey}, New Status: ${newStatus}`);
+    window.location.reload(true);
+    fetch(`/api/rooms/status/${roomId}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({statusKey, newStatus})
+        
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error, status = ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            console.log('Reload page, update was successful.');
+            window.location.reload(true);
+        } else {
+            throw new Error('Update failed: ' + (data.error || 'No error message provided'));
+        }
+    })
+    .catch(error => {
+        console.error('Error in updating room status:', error);
+    });
+}
+
+
     </script>
 </body>
-
 </html>
