@@ -282,7 +282,7 @@
         function getClassByStatus(status) {
             switch (status.toLowerCase()) {
                 case 'free':
-                    return 'bg-dark';
+                    return 'bg-success';
                 case 'pending':
                     return 'bg-warning';
                 case 'reserved':
@@ -325,48 +325,30 @@
             </select>
             <input id="roomDetails" class="swal2-input" placeholder="Enter Details (e.g., Capacity: 20)">
         `,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Add Room',
-                cancelButtonText: 'Cancel',
-                customClass: {
-                    confirmButton: 'add-room-confirm-btn',
-                    cancelButton: 'add-room-cancel-btn'
-                },
-                preConfirm: () => {
-                    const roomType = document.getElementById('roomType').value;
-                    const roomDetails = document.getElementById('roomDetails').value;
-                    if (!roomType || !roomDetails) {
-                        Swal.showValidationMessage('Please enter all required fields');
-                    }
-                    return { roomType: roomType, roomDetails: roomDetails };
-                }
-            }).then((result) => {
-                if (result.isConfirmed && result.value) {
-                    const roomType = result.value.roomType;
-                    const roomDetails = result.value.roomDetails;
-                    let imgName = '';
-
-                    switch (roomType) {
-                        case 'Multimedia Room':
-                            imgName = 'Multimedia.jpg';
-                            break;
-                        case 'Study Room':
-                            imgName = 'studyroom.jpg';
-                            break;
-                        case 'Reading Room':
-                            imgName = 'reading.jpeg';
-                            break;
-                        default:
-                            imgName = 'default.jpg';
-                    }
-
-                    addRoom(roomType, roomDetails, imgName);
-                }
-            });
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Add Room',
+        cancelButtonText: 'Cancel',
+        customClass: {
+            confirmButton: 'add-room-confirm-btn',
+            cancelButton: 'add-room-cancel-btn'
+        },
+        preConfirm: () => {
+            const roomType = document.getElementById('roomType').value;
+            const roomDetails = document.getElementById('roomDetails').value;
+            if (!roomType || !roomDetails) {
+                Swal.showValidationMessage('Please enter all required fields');
+            }
+            return { roomType: roomType, roomDetails: roomDetails };
         }
+    }).then((result) => {
+        if (result.isConfirmed && result.value) {
+            addRoom(result.value.roomType, result.value.roomDetails);
+        }
+    });
+}
 
 
 

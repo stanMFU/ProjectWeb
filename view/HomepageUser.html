@@ -423,8 +423,8 @@ function createRoomCard(room) {
         }
 
         function addBookingButtons(room, cardBody) {
-            // const currentHour = new Date().getHours();
-            const currentHour = 7;
+            const currentHour = new Date().getHours();
+            // const currentHour = 7;
             const slots = [
                 { key: 'status_8_10', label: '8:00-10:00' },
                 { key: 'status_10_12', label: '10:00-12:00' },
