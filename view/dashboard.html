@@ -9,34 +9,63 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        .status-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            border-radius: 8px;
-            color: white;
-            margin: 10px; /* Smaller margin for better square fitting */
-            height: 100px; /* Reduced height */
-            flex: 1; /* Makes each card flexible */
-        }
-        .status-card h3 {
-            margin: 10;
-            font-size: 24px; /* Smaller font size */
-        }
+/* Base styling for overall consistency and modern look */
+body, html {
+    font-family: 'Roboto', sans-serif; /* Modern, clean font */
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9; /* Light and neutral background color */
+    color: #333;
+}
 
-        .bg-free { background-color: #28a745; }
-        .bg-pending { background-color: #f0ad4e; }
-        .bg-reserved { background-color: #5bc0de; }
-        .bg-disabled { background-color: #d9534f; }
-        .container-center {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap; /* Ensures wrapping of cards */
-            max-width: 650px; /* Limiting max width for better control */
-            margin: auto; /* Centering the container */
-        }
+
+
+/* General card styles */
+.status-card {
+    border-radius: 10px; /* Rounded corners for a softer look */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    margin: 15px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1); /* Smooth transition for hover effect */
+}
+
+.status-card:hover {
+    box-shadow: 0 12px 20px 0 rgba(0,0,0,0.2); /* Deeper shadow on hover */
+    transform: translateY(-5px); /* Slight lift on hover */
+}
+
+/* Specific colors for different types of slots */
+.bg-free { background-color: #27ae60; } /* Vibrant green */
+.bg-pending { background-color: #f39c12; } /* Bright orange */
+.bg-reserved { background-color: #2980b9; } /* Calm blue */
+.bg-disabled { background-color: #e74c3c; } /* Alert red */
+
+/* Container adjustments for a uniform grid layout */
+.container-center {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Four columns for four types of slots */
+    gap: 20px;
+    max-width: 1200px; /* Maximum width to maintain form factor */
+    margin: 40px auto; /* Centering the container */
+}
+
+h3 {
+    font-size: 1.5rem; /* Larger font size for visibility */
+    margin-bottom: 10px; /* Space between text and number */
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    .container-center {
+        grid-template-columns: repeat(2, 1fr); /* Two columns in smaller screens */
+    }
+}
+
     </style>
 </head>
 <body>
