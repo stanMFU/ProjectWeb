@@ -686,7 +686,7 @@ app.get('/password/:password', hashPassword);
 app.get('/room/:orderingID', getRoomByOrderingID);
 
 // Start server
-const PORT = 3000;
+const PORT =4000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
@@ -782,37 +782,36 @@ function handleQueryResponse(res) {
 }
 
 
-app.post('/api/add-room', (req, res) => {
+app.post("/api/add-room", (req, res) => {
     const { room_name, details, time_slots } = req.body;
-
+  
     const enable = 1;
-
+  
     // Determine status based on time_slots
-    const status_8_10 = time_slots.includes('8-10') ? 'Free' : 'Disabled';
-    const status_10_12 = time_slots.includes('10-12') ? 'Free' : 'Disabled';
-    const status_13_15 = time_slots.includes('13-15') ? 'Free' : 'Disabled';
-    const status_15_17 = time_slots.includes('15-17') ? 'Free' : 'Disabled';
-
+    const status_8_10 = time_slots.includes("8-10") ? "Free" : "Disabled";
+    const status_10_12 = time_slots.includes("10-12") ? "Free" : "Disabled";
+    const status_13_15 = time_slots.includes("13-15") ? "Free" : "Disabled";
+    const status_15_17 = time_slots.includes("15-17") ? "Free" : "Disabled";
+  
     // Example SQL query to insert a new room into the database
-    const insertRoomQuery =
-        `INSERT INTO rooms (room_name, details, status_8_10, status_10_12, status_13_15, status_15_17)
-         VALUES (?, ?, ?, ?, ?, ?)`;
-
+    const insertRoomQuery = `INSERT INTO rooms (room_name, details, status_8_10, status_10_12, status_13_15, status_15_17)
+           VALUES (?, ?, ?, ?, ?, ?)`;
+  
     // Execute the SQL query with input parameters
     con.query(
-        insertRoomQuery,
-        [room_name, details, status_8_10, status_10_12, status_13_15, status_15_17],
-        (err, result) => {
-            if (err) {
-                console.error('Error inserting room:', err);
-                return res.status(500).json({ error: 'Failed to add room' });
-            }
-            console.log('New room added:', result);
-            return res.status(200).json({ message: 'Room added successfully' });
+      insertRoomQuery,
+      [room_name, details, status_8_10, status_10_12, status_13_15, status_15_17],
+      (err, result) => {
+        if (err) {
+          console.error("Error inserting room:", err);
+          return res.status(500).json({ error: "Failed to add room" });
         }
+        console.log("New room added:", result);
+        return res.status(200).json({ message: "Room added successfully" });
+      }
     );
-});
-
+  });
+  
 // PUT route to update room status, enable/disable state, and time slot statuses
 app.put('/api/rooms/:roomId', (req, res) => {
     const { roomId } = req.params;
@@ -843,7 +842,7 @@ app.put('/api/rooms/:roomId', (req, res) => {
 
 app.post('/api/rooms/update/:roomId', (req, res) => {
     const { roomId } = req.params;
-    const { roomType, details } = req.body;
+    const { roomType, details, img } = req.body;
 
     let updates = [];
     let parameters = [];
@@ -856,6 +855,11 @@ app.post('/api/rooms/update/:roomId', (req, res) => {
     if (details) {
         updates.push("details = ?");
         parameters.push(details);
+    }
+
+    if (img) {
+        updates.push("img = ?");
+        parameters.push(img);
     }
 
     if (updates.length === 0) {
@@ -879,6 +883,7 @@ app.post('/api/rooms/update/:roomId', (req, res) => {
         }
     });
 });
+
 app.post('/api/rooms/status/:roomId', (req, res) => {
     const roomId = req.params.roomId;
     const { statusKey, newStatus } = req.body;
@@ -898,16 +903,16 @@ app.post('/api/rooms/status/:roomId', (req, res) => {
 });
 
 app.post('/api/rooms/add', (req, res) => {
-    const { roomType, details } = req.body;
+    const { roomType, details, img } = req.body; // เพิ่มการรับค่า img ด้วย
 
     // Construct the SQL query to insert a new room
     const query = `
         INSERT INTO rooms (room_name, details, enabled, status_8_10, status_10_12, status_13_15, status_15_17, img)
-        VALUES (?, ?, 1, 'Free', 'Free', 'Free', 'Free', 'default.jpg');
+        VALUES (?, ?, 1, 'Free', 'Free', 'Free', 'Free', ?);
     `;
 
     // Execute the query to insert the new room
-    db.query(query, [roomType, details], (err, result) => {
+    db.query(query, [roomType, details, img], (err, result) => { // ใส่ img ใน array ของ parameters
         if (err) {
             console.error('Error adding new room:', err);
             return res.status(500).json({ success: false, error: 'Database error occurred.' });
@@ -916,6 +921,7 @@ app.post('/api/rooms/add', (req, res) => {
         res.status(201).json({ success: true, message: 'Room added successfully', data: result });
     });
 });
+
 
 app.delete('/api/rooms/delete/:roomId', async (req, res) => {
     const roomId = req.params.roomId;
