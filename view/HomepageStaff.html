@@ -94,6 +94,24 @@
             background-color: #218838;
             /* Darker green color on hover */
         }
+        .swal2-select {
+                    margin-bottom: 10px; /* Provides space between the select and the input */
+                }
+                .swal2-select, .swal2-input {
+                    width: 80%; /* Adjusted to 100% of the Swal content area */
+                    padding: .375rem .75rem;
+                    font-size: 1rem;
+                    line-height: 1.5;
+                    color: #495057;
+                    background-color: #fff;
+                    background-clip: padding-box;
+                    border: 1px solid #ced4da;
+                    border-radius: .25rem;
+                    box-sizing: border-box; /* Makes sure the padding and border are included in the width */
+                }
+                .swal2-container {
+                    padding: 50px; /* Ensures there's padding around the popup */
+                }
     </style>
 </head>
 
@@ -324,6 +342,7 @@
                 <option value="Reading Room">Reading Room</option>
             </select>
             <input id="roomDetails" class="swal2-input" placeholder="Enter Details (e.g., Capacity: 20)">
+
         `,
         icon: 'question',
         showCancelButton: true,
@@ -357,7 +376,27 @@
                 title: 'Edit Room Details',
                 html: `
             <style>
-                /* Add your custom styles here if needed */
+                .swal2-container {
+                    padding: 50px; /* Ensures there's padding around the popup */
+                }
+                .swal2-container {
+                    padding: 50px; /* Ensures there's padding around the popup */
+                }
+                .swal2-select, .swal2-input {
+                    width: 80%; /* Adjusted to 100% of the Swal content area */
+                    padding: .375rem .75rem;
+                    font-size: 1rem;
+                    line-height: 1.5;
+                    color: #495057;
+                    background-color: #fff;
+                    background-clip: padding-box;
+                    border: 1px solid #ced4da;
+                    border-radius: .25rem;
+                    box-sizing: border-box; /* Makes sure the padding and border are included in the width */
+                }
+                .swal2-select {
+                    margin-bottom: 10px; /* Provides space between the select and the input */
+                }
             </style>
             <div class="edit-room-container">
                 <div class="edit-room-section">
@@ -368,14 +407,14 @@
                     <h5 class="edit-room-heading">Current Details:</h5>
                     <p class="edit-room-info">${currentDetails}</p>
                 </div>
-                <div class="edit-room-section">
-                    <select id="roomTypeEdit" class="form-control swal2-input" onchange="changeRoomImage(this)">
+                <div class="">
+                    <select id="roomTypeEdit" class="swal2-select" onchange="changeRoomImage(this)">
                         <option value="" ${currentType ? '' : 'selected'}>No Change</option>
                         <option value="Multimedia Room" ${currentType === 'Multimedia Room' ? 'selected' : ''}>Multimedia Room</option>
                         <option value="Study Room" ${currentType === 'Study Room' ? 'selected' : ''}>Study Room</option>
                         <option value="Reading Room" ${currentType === 'Reading Room' ? 'selected' : ''}>Reading Room</option>
                     </select>
-                    <input id="roomDetails" class="form-control edit-room-input" placeholder="New Details (leave blank if no change)">
+                    <input id="roomDetails" class="swal2-input" placeholder="New Details (leave blank if no change)">
                     <input id="roomImage" type="hidden">
                 </div>
             </div>`,
