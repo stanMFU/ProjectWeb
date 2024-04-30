@@ -67,12 +67,14 @@ async function verifyCredentials(username, password) {
     throw err;
   }
 }
+
 // Start server
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-//sesstion
+
+//session
 app.get("/api/session", (req, res) => {
     if (req.session.user) {
       res.json({ loggedIn: true, user: req.session.user });
@@ -983,7 +985,7 @@ app.post("/api/rooms/status/:roomId", (req, res) => {
 });
 
 app.post("/api/rooms/add", (req, res) => {
-  const { roomType, details, img } = req.body; // เพิ่มการรับค่า img ด้วย
+  const { roomType, details, img } = req.body; 
 
   // Construct the SQL query to insert a new room
   const query = `
