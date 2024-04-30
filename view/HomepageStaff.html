@@ -101,7 +101,7 @@
     <!-- Navbar -->
     <div class="ps-2 navbar bg-dark " style="background-image: url('/public/img/homepage3.jpg');">
         <div>
-            <a href="/HomepageStaff.html" class="text-white navbar ps-5">HOMEPAGE</a>
+            <a href="/HomepageStaff.html" class="text-white navbar ps-5 fw-bold">HOMEPAGE</a>
         </div>
         <div>
             <a href="/staffHistory.html" class="text-white px-4" style="text-decoration: none">History</a>
@@ -130,8 +130,11 @@
 
 
     <!-- Room slot container -->
-    <div id="Roomslot" class="d-flex flex-wrap container justify-content-center fw-bold"></div>
-
+    <div id="Roomslot" class="d-flex flex-wrap container justify-content-center fw-bold mb-5"></div>
+    <footer class="footer">
+        <div class="container">
+            <p></p>
+        </div>
     <!-- JavaScript for handling room operations -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -214,14 +217,14 @@
                 });
 
                 let editBtn = document.createElement('button');
-                editBtn.className = 'btn btn-warning btn-sm mt-3';
+                editBtn.className = 'btn btn-warning btn-sm mt-3 text-white fw-bold';
                 editBtn.textContent = 'Edit';
                 editBtn.onclick = function () { editRoom(room.room_id, room.room_name, room.details); };
                 card_body.appendChild(editBtn);
 
                 if (allSlotsFreeOrDisabled) {
                     let deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'btn btn-danger btn-sm mt-3';
+                    deleteBtn.className = 'btn btn-danger btn-sm mt-3 fw-bold';
                     deleteBtn.textContent = 'Delete';
                     deleteBtn.onclick = function () { deleteRoom(room.room_id); };
                     card_body.appendChild(deleteBtn);
@@ -294,10 +297,17 @@
             }
         }
         function addRoomPrompt() {
-            Swal.fire({
-                title: 'Add New Room',
-                html: `
+    const imgMap = {
+        'Multimedia Room': 'multimedia.jpg',
+        'Study Room': 'studyroom.jpg',
+        'Reading Room': 'reading.jpeg'
+    };
+
+    Swal.fire({
+        title: 'Add New Room',
+        html: `
             <style>
+                /* CSS สำหรับการปรับแต่งหน้าต่าง Swal */
                 .swal2-container {
                     padding: 50px; /* Ensures there's padding around the popup */
                 }
@@ -341,11 +351,12 @@
             if (!roomType || !roomDetails) {
                 Swal.showValidationMessage('Please enter all required fields');
             }
-            return { roomType: roomType, roomDetails: roomDetails };
+            const img = imgMap[roomType]; 
+            return { roomType: roomType, roomDetails: roomDetails, img: img };
         }
     }).then((result) => {
         if (result.isConfirmed && result.value) {
-            addRoom(result.value.roomType, result.value.roomDetails);
+            addRoom(result.value.roomType, result.value.roomDetails, result.value.img);
         }
     });
 }
@@ -448,52 +459,48 @@
             }
         }
 
-        function addRoom(roomType, roomDetails, imgName) {
-            const payload = {
-                roomType: roomType,
-                details: roomDetails,
-                img: imgName
-            };
-            window.location.reload();
-            fetch('/api/rooms/add', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+        function addRoom(roomType, roomDetails, img) {
+    const payload = {
+        roomType: roomType,
+        details: roomDetails,
+        img: img
+    };
 
-                body: JSON.stringify(payload)
-
-            })
-
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error, status = ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        Swal.fire({
-                            title: 'Success!',
-                            text: 'The room has been added successfully.',
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            window.location.reload();
-                        });
-                    } else {
-                        throw new Error(data.error || 'Failed to add room');
-                    }
-                })
-                .catch(error => {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Failed to add room: ' + error.message,
-                        icon: 'error'
-                    });
-                });
+    fetch('/api/rooms/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error, status = ${response.status}`);
         }
-
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                title: 'Success!',
+                text: 'The room has been added successfully.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.reload(); // Reloads the page to reflect the changes
+            });
+        } else {
+            throw new Error(data.error || 'Failed to add room');
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            title: 'Error!',
+            text: 'Failed to add room: ' + error.message,
+            icon: 'error'
+        });
+    });
+}
 
 
 

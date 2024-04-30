@@ -21,7 +21,7 @@
                                 <div class="py-1">Username</div>
                                 <input type="text" name="username" class="form-control shadow" placeholder="Username..." required autocomplete="username">
                                 <div class="py-1">Password</div>
-                                <input type="password" name="password" class="form-control shadow" placeholder="Password..." required autocomplete="current-password">
+                                <input type="password" name="password" class="form-control shadow" placeholder="Password..." required autocomplete="current-password" >
                                 <div class="py-3">
                                     <input type="checkbox" id="cbRemember" class="form-check-input shadow">
                                     <label for="cbRemember">Remember me</label>
@@ -40,18 +40,36 @@
             </div>
         </form>
     </div>
+
+    <!-- Modal for Login Error -->
+    <div class="modal fade" id="loginErrorModal" tabindex="-1" aria-labelledby="loginErrorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginErrorModalLabel">Login Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Error message will be displayed here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const formLogin = document.querySelector('#loginForm');
-            const loginErrorModal = document.getElementById('loginErrorModal');  // Assuming you have a modal in your HTML for errors
-        
+
             formLogin.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const username = formLogin['username'].value;
                 const password = formLogin['password'].value;
                 const rememberCheckbox = document.getElementById('cbRemember');
                 const remember = rememberCheckbox.checked;
-        
+
                 try {
                     const options = {
                         method: 'POST',
@@ -63,29 +81,41 @@
                         const data = await response.json();
                         if (data.user && data.user.id) {
                             sessionStorage.setItem('userId', data.user.id);
-                            window.location.href = data.redirect;
-                        } else {
-                            showErrorModal('Login failed: No redirect path provided.');
-                        }
-                    } else {
+                            // Using SweetAlert2 for success message
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Login Successful!',
+                                text: 'Redirecting...',
+                                timer: 2000, // Duration in milliseconds
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = data.redirect;
+                            });
+                        } } else {
                         const errorText = await response.text();
-                        showErrorModal(`Login failed: ${errorText}`);
+                        showErrorModal(`${errorText}`);
                     }
                 } catch (err) {
-                    showErrorModal('Login failed: ' + err.message);
+                    showErrorModal(err.message);
                 }
             });
-        
+
             function showErrorModal(message) {
-                if (loginErrorModal) {
-                    loginErrorModal.querySelector('.modal-body').textContent = message;
-                    $(loginErrorModal).modal('show');
-                } else {
-                    console.error(message);
-                }
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Failed!',
+                    text: message,
+                    customClass: {
+                        container: 'my-swal',
+                        popup: 'my-swal-popup',
+                        header: 'my-swal-header',
+                        title: 'my-swal-title',
+                        content: 'my-swal-content',
+                        footer: 'my-swal-footer'
+                    }
+                });
             }
         });
-
     </script>
 </body>
 </html>

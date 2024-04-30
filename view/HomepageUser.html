@@ -80,7 +80,7 @@
 
         </div>
         <div class="">
-            <a href="/userHistory.html" class="text-white px-4" style="text-decoration: none">History</a>
+            <a href="/userHistory.html" class="text-white px-4 " style="text-decoration: none">History</a>
             <span id="usernameDisplay" class="text-white px-4">Loading...</span>
             <img src="/public/img/login.jpg" alt="Logo" width="60px" height="60px" class="rounded-circle shadow"
                 id="logo">
@@ -97,12 +97,12 @@
     </div>
     <button id="checkStatusButton" class="btn btn-dark m-3 d-block mx-auto">Check Status</button>
 
-    <div id="Roomslot" class="d-flex flex-wrap container justify-content-center fw-bold"></div>
+    <div id="Roomslot" class="d-flex flex-wrap container justify-content-center fw-bold mb-5"></div>
     <script src="/public/client.js"></script>
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; bookingroom.com</p>
+            <p></p>
         </div>
     </footer>
     <script>
@@ -423,8 +423,8 @@ function createRoomCard(room) {
         }
 
         function addBookingButtons(room, cardBody) {
-            const currentHour = new Date().getHours();
-            // const currentHour = 7;
+            // const currentHour = new Date().getHours();
+            const currentHour = 7;
             const slots = [
                 { key: 'status_8_10', label: '8:00-10:00' },
                 { key: 'status_10_12', label: '10:00-12:00' },

@@ -72,11 +72,11 @@ h3 {
     <!-- Navbar -->
     <div class="ps-2 navbar bg-dark" style="background-image: url('/public/img/homepage3.jpg');">
         <div>
-            <a href="javascript:redirectToHomepage();" class="text-white navbar ps-5">HOMEPAGE</a>
+            <a href="javascript:redirectToHomepage();" class="text-white navbar ps-5" style="text-decoration: none">HOMEPAGE</a>
         </div>
         <div>
             <a href="javascript:redirectToHistoryPage();" class="text-white px-4" style="text-decoration: none">History</a>
-            <a href="/dashboard.html" class="text-white px-4" style="text-decoration: none">Dashboard</a>
+            <a href="/dashboard.html" class="text-white px-4 fw-bold">Dashboard</a>
             <span id="requestLink" style="display: none;"><a href="/request.html" class="text-white px-4" style="text-decoration: none">Request</a></span>
             <span id="usernameDisplay" class="shadow form text-white px-4">Loading...</span>
             <img src="/public/img/login.jpg" alt="Logo" width="60px" height="60px" class="rounded-circle shadow">
@@ -107,6 +107,10 @@ h3 {
             <span id="disabled_slots">0</span>
         </div>
     </div>
+      <footer class="footer">
+        <div class="container">
+            <p></p>
+        </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             fetchRoomStatuses();
